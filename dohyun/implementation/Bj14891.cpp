@@ -19,7 +19,7 @@ void determineWheelDirection(int wheelNo, int direction) {
 	checked[wheelNo] = true;
 
 	if (wheelNo > 1 && !checked[wheelNo - 1]) { // 왼쪽
-        // 3번과 7번의 극이 서로 다르면 회전방향과 반대방향으로 회전함
+		// 3번과 7번의 극이 서로 다르면 회전방향과 반대방향으로 회전함
 		if (direction != 0 && cogwheels[wheelNo - 1][2] != cogwheels[wheelNo][6])
 			determineWheelDirection(wheelNo - 1, -direction);
 		else
@@ -54,9 +54,9 @@ int main() {
 		cin >> wheelNo >> rotationDir;
 		memset(checked, false, sizeof checked);
 		memset(isSpinning, false, sizeof isSpinning);
-        // 1은 시계, -1은 반시계 방향으로 회전함 여기서 0은 회전하지 않음을 의미함
+		// 1은 시계, -1은 반시계 방향으로 회전함 여기서 0은 회전하지 않음을 의미함
 		determineWheelDirection(wheelNo, rotationDir);
-        // 각 톱니바퀴의 회전 방향에 따라 기어들을 회전시킴
+		// 각 톱니바퀴의 회전 방향에 따라 기어들을 회전시킴
 		rotateWheels();
 	}
 	cout << calculateScore() << '\n';
