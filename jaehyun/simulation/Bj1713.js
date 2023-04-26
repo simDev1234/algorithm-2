@@ -8,7 +8,7 @@ const R_students = input.shift().split(" ").map(Number);
 
 function solution(frame, n, arr) {
   let stack = [];
-  let cnt = 0;
+  let cnt = 0; // 인덱스
   let cursor = []; //인덱스를 담는 체크배열
   let count = parseInt(n / frame);
 
