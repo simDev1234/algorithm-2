@@ -31,8 +31,8 @@ public class Bj1327 {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        String origin = arrayToString(arr);
-        String ordered = arrayToString(Arrays.stream(arr).sorted().toArray());
+        String origin = arrayToString(arr); // 54321
+        String ordered = arrayToString(Arrays.stream(arr).sorted().toArray()); //12345
 
         Queue<Node> q = new LinkedList<>();
         Set<String> visited = new HashSet<>();
