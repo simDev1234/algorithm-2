@@ -4,30 +4,41 @@ let input = fs.readFileSync(filePath).toString().trim().split("\n");
 
 const N = +input.shift();
 const K = +input.pop();
-const energyList = input.map((row) => row.split(" ").map(Number));
-energyList.unshift(null);
+const cost = input.map((row) => row.split(" ").map(Number));
+const smallJumpCost = [];
+const bigJumpCost = [];
 
-const bfs = () => {
-  const q = [[1, 0, true]];
-  const answer = [];
-  while (q.length) {
-    const [pos, energy, chance] = q.shift();
-    if (pos > N) continue;
-    if (pos === N) {
-      answer.push(energy);
-      continue;
-    }
-    if (pos + 1 <= N) {
-      q.push([pos + 1, energy + energyList[pos][0], chance]);
-    }
-    if (pos + 2 <= N) {
-      q.push([pos + 2, energy + energyList[pos][1], chance]);
-    }
-    if (chance && pos + 3 <= N) {
-      q.push([pos + 3, energy + K, !chance]);
-    }
-  }
-  return answer;
-};
-const list = bfs();
-console.log(Math.min(...list));
+cost.forEach(([small, big]) => {
+  smallJumpCost.push(small);
+  bigJumpCost.push(big);
+});
+smallJumpCost.unshift(0);
+bigJumpCost.unshift(0);
+
+let dp = [];
+dp[0] = 0;
+dp[1] = 0;
+dp[2] = smallJumpCost[1];
+dp[3] = Math.min(dp[1] + bigJumpCost[1], dp[2] + smallJumpCost[2]);
+
+let useVeryBigJumpDP = [
+  Number.MAX_SAFE_INTEGER,
+  Number.MAX_SAFE_INTEGER,
+  Number.MAX_SAFE_INTEGER,
+  Number.MAX_SAFE_INTEGER,
+];
+
+for (let i = 4; i <= N; i++) {
+  dp[i] = Math.min(
+    dp[i - 2] + bigJumpCost[i - 2],
+    dp[i - 1] + smallJumpCost[i - 1]
+  );
+
+  useVeryBigJumpDP[i] = Math.min(
+    useVeryBigJumpDP[i - 2] + bigJumpCost[i - 2],
+    useVeryBigJumpDP[i - 1] + smallJumpCost[i - 1],
+    dp[i - 3] + K
+  );
+}
+
+console.log(Math.min(dp[N], useVeryBigJumpDP[N]));
