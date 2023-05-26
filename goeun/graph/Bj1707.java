@@ -7,34 +7,34 @@ import java.util.*;
 
 public class Bj1707 {
 
-    static String solution(int v, int e, int[][] arr) {
+    static String solution(int v, int e, List<List<Integer>> edges) {
 
-        List<List<Integer>> edges = new ArrayList<>();
-        for (int i = 0; i <= v; i++) {
-            edges.add(new ArrayList<>());
-        }
-
-        for (int i = 0; i < e; i++) {
-            edges.get(arr[i][0]).add(arr[i][1]);
-            edges.get(arr[i][1]).add(arr[i][0]);
-        }
+        if (e == 1) return "NO";
 
         int[] check = new int[v + 1];
 
         // 정점의 이웃들을 다른 색으로 색칠하기 > black - 1 또는 white - 2로 표시
         Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{arr[0][0], 1});
+
+        for (int i = 1; i <= v; i++) {
+            if (edges.get(i).size() >= 1) {
+                q.add(new int[]{i, 1});
+                check[i] = 1;
+                break;
+            }
+        }
 
         while (!q.isEmpty()) {
             int[] cur = q.poll();
 
             for (int i = 0; i < edges.get(cur[0]).size(); i++) {
                 int next = edges.get(cur[0]).get(i);
-                if (check[next] == check[cur[0]]) return "NO";
                 if (check[next] == 0) {
                     int color = cur[1] % 2 + 1;
                     check[next] = color;
                     q.add(new int[]{next, color});
+                } else {
+                    if (check[next] == check[cur[0]]) return "NO";
                 }
             }
         }
@@ -47,24 +47,30 @@ public class Bj1707 {
 
         int k = Integer.parseInt(br.readLine());
 
-        StringBuilder sb = new StringBuilder();
+        List<String> answers = new ArrayList<>();
         while (k --> 0) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int v = Integer.parseInt(st.nextToken());
             int e = Integer.parseInt(st.nextToken());
 
-            int[][] edges = new int[e][2];
+            List<List<Integer>> edges = new ArrayList<>();
+            for (int i = 0; i <= v; i++) {
+                edges.add(new ArrayList<>());
+            }
 
             for (int i = 0; i < e; i++) {
                 st = new StringTokenizer(br.readLine());
                 int s = Integer.parseInt(st.nextToken());
                 int t = Integer.parseInt(st.nextToken());
-                edges[i] = new int[]{s, t};
-                sb.append(solution(v, e, edges));
+                edges.get(s).add(t);
             }
+
+            answers.add(solution(v, e, edges));
         }
 
-        System.out.println(sb.toString());
+        for (String s : answers) {
+            System.out.println(s);
+        }
     }
 
 }
