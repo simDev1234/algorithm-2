@@ -12,6 +12,7 @@ public class Bj11509 {
         int cnt = 0;
         int[] arrows = new int[1000001]; // 각 높이에 맞는 화살의 갯수
 
+        // 1 2 3 4 5
         for (int i = 0; i < N; i++) {
             // 현재 높이로 날아오는 화살이 있는 경우
             if (arrows[balloons[i]] > 0) {
