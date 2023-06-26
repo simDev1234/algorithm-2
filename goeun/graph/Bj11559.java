@@ -18,6 +18,7 @@ public class Bj11559 {
             this.r = r;
             this.c = c;
         }
+
     }
 
     static char[][] map = new char[12][6];
@@ -43,7 +44,7 @@ public class Bj11559 {
 
                     // 방문한적 없는 뿌요 위치라면 상하좌우 탐색
                     if (puyo != '.' && !visited[i][j]) {
-                        bfs(i, j, 1);
+                        bfs(i, j);
                     }
 
                     if (tracks.size() >= 4) {
@@ -102,7 +103,7 @@ public class Bj11559 {
         map[nR][nC] = tmp;
     }
 
-    static void bfs(int r, int c, int count) {
+    static void bfs(int r, int c) {
 
         // 처음 방문한 위치
         visited[r][c] = true;
