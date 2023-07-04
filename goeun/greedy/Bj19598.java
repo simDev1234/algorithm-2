@@ -38,26 +38,34 @@ public class Bj19598 {
             meetings.add(new Meeting(start, end));
         }
 
-        PriorityQueue<Integer> schedules = new PriorityQueue<>();
-        int maxSize = 0;
+        List<Integer> meetingRooms = new ArrayList<>();
+        meetingRooms.add(meetings.poll().end);
+
+        int result = 1;
         while (!meetings.isEmpty()) {
 
             // 현재 회의에 대해서
             Meeting curMeeting = meetings.poll();
+            boolean hasMeetingRoom = false;
 
-            while (!schedules.isEmpty()) {
-                // 각 회의실의 종료 시간 후에 시작된다면 이어서 한다.
-                if (schedules.peek() <= curMeeting.start) {
-                    schedules.poll();
-                    schedules.add(curMeeting.end);
+            // 각 회의실의 종료 시간에 이어서 들어갈 수 있는지 확인
+            for (int i = 0; i < meetingRooms.size(); i++) {
+                if (meetingRooms.get(i) <= curMeeting.start) {
+                    hasMeetingRoom = true;
+                    meetingRooms.remove(i);
+                    meetingRooms.add(curMeeting.end);
                     break;
                 }
-                // 아니면 회의를 새로 추가한다.
-                schedules.add(curMeeting.end);
             }
-            maxSize = Math.max(maxSize, schedules.size());
+
+            // 이어서 들어갈 수 없다면 새로 회의실 생성
+            if (!hasMeetingRoom) {
+                result++;
+                meetingRooms.add(curMeeting.end);
+            }
         }
-        System.out.println(maxSize);
+
+        System.out.println(result);
 
     }
 
